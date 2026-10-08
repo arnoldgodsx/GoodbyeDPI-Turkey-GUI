@@ -1,0 +1,35 @@
+<UserControl x:Class="Hub.Modules.Settings.SettingsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hub="clr-namespace:Hub">
+    <StackPanel>
+        <TextBlock Text="Ayarlar" Style="{StaticResource Title}" hub:Motion.Reveal="True"/>
+
+        <StackPanel Margin="0,36,0,0">
+            <Border Style="{StaticResource Hairline}" hub:Motion.Reveal="True"/>
+
+            <Grid Height="64" hub:Motion.Reveal="True">
+                <TextBlock Text="Windows ile başlat" Style="{StaticResource RowText}"/>
+                <ToggleButton x:Name="StartupSwitch" Style="{StaticResource Switch}" HorizontalAlignment="Right" Click="OnStartupToggle"
+                              Opacity="0" IsHitTestVisible="False"/>
+                <Border Style="{StaticResource Hairline}" VerticalAlignment="Bottom"/>
+            </Grid>
+
+            <Button Style="{StaticResource RowButton}" Click="OnOpenFolder" hub:Motion.Reveal="True">
+                <Grid Height="64">
+                    <TextBlock Text="Klasörü aç" Style="{StaticResource RowText}"/>
+                    <Path Data="M1,10 L10,1 M3.5,1 L10,1 L10,7.5" Stroke="{StaticResource Muted}" StrokeThickness="1.4"
+                          StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                          HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <Border Style="{StaticResource Hairline}" VerticalAlignment="Bottom"/>
+                </Grid>
+            </Button>
+        </StackPanel>
+
+        <TextBlock x:Name="ErrorText" Foreground="{StaticResource Danger}" FontSize="12.5" TextWrapping="Wrap"
+                   Margin="0,14,0,0" Visibility="Collapsed"/>
+
+        <Button Style="{StaticResource OutlineButton}" Content="Hub'ı kapat" HorizontalAlignment="Left"
+                Margin="0,32,0,0" Click="OnQuit" hub:Motion.Reveal="True"/>
+    </StackPanel>
+</UserControl>

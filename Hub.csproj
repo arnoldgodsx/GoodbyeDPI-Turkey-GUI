@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Hub</AssemblyName>
+    <RootNamespace>Hub</RootNamespace>
+    <ApplicationIcon>Assets\hub.ico</ApplicationIcon>
+    <Product>Hub</Product>
+    <AssemblyTitle>Hub</AssemblyTitle>
+    <Company>arnoldgodsx</Company>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System.IO" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="10.*" />
+    <Resource Include="Assets\hub.ico" />
+    <!-- Geist, Geist Mono (OFL lisanslı, Assets\Fonts\OFL.txt) -->
+    <Resource Include="Assets\Fonts\*.ttf" />
+    <!-- Modüllerin yanında taşınan harici dosyalar (exe'nin yanına kopyalanır) -->
+    <None Include="engine\**\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+  </ItemGroup>
+
+</Project>
