@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,26 +8,18 @@ namespace Hub;
 public partial class MainWindow : Window
 {
     readonly Dictionary<IModule, FrameworkElement> _pages = [];
-    bool _switching;
 
     public MainWindow()
     {
         InitializeComponent();
-        var app = App.Current;
-        ModuleList.ItemsSource = app.Modules;
-        FooterList.ItemsSource = new IModule[] { app.Settings };
+        ModuleList.ItemsSource = App.Current.Modules;
         SourceInitialized += (_, _) => Dwm.Apply(this);
         ModuleList.SelectedIndex = 0;
     }
 
     void OnModuleSelected(object sender, SelectionChangedEventArgs e)
     {
-        if (_switching || ((ListBox)sender).SelectedItem is not IModule module) return;
-
-        // İki liste tek bir seçim gibi davranır.
-        _switching = true;
-        (sender == ModuleList ? FooterList : ModuleList).SelectedItem = null;
-        _switching = false;
+        if (((ListBox)sender).SelectedItem is not IModule module) return;
 
         if (!_pages.TryGetValue(module, out var page))
             _pages[module] = page = module.CreatePage();
@@ -38,13 +29,9 @@ public partial class MainWindow : Window
 
     // ------------------------------------------------------------------ --snapshot için
 
-    public int PageCount => ModuleList.Items.Count + FooterList.Items.Count;
+    public int PageCount => ModuleList.Items.Count;
 
-    public void SelectPage(int i)
-    {
-        if (i < ModuleList.Items.Count) ModuleList.SelectedIndex = i;
-        else FooterList.SelectedIndex = i - ModuleList.Items.Count;
-    }
+    public void SelectPage(int i) => ModuleList.SelectedIndex = i;
 
     public void SaveSnapshot(string path)
     {
@@ -66,29 +53,18 @@ public partial class MainWindow : Window
         if (e.ButtonState == MouseButtonState.Pressed) DragMove();
     }
 
-    void OnHide(object sender, RoutedEventArgs e) => Hide();
+    void OnClose(object sender, RoutedEventArgs e) => Close();
     void OnMinimize(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
-        // Ctrl+1…9 sayfa seçer, Esc arka plana gönderir.
-        if (e.Key == Key.Escape) { Hide(); e.Handled = true; }
+        // Ctrl+1…9 sayfa seçer, Esc kapatır.
+        if (e.Key == Key.Escape) { Close(); e.Handled = true; }
         else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key is >= Key.D1 and <= Key.D9 && e.Key - Key.D1 < PageCount)
         {
             SelectPage(e.Key - Key.D1);
             e.Handled = true;
         }
         base.OnPreviewKeyDown(e);
-    }
-
-    protected override void OnClosing(CancelEventArgs e)
-    {
-        // Pencere kapanınca sadece arayüz gizlenir; modüller arka planda çalışmaya devam eder.
-        if (!App.Current.Quitting)
-        {
-            e.Cancel = true;
-            Hide();
-        }
-        base.OnClosing(e);
     }
 }

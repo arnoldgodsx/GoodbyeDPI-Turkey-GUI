@@ -48,7 +48,7 @@ jobs:
           $p = Start-Process dist\GoodbyeDPI-Turkey-GUI.exe -ArgumentList '--snapshot', "$PWD\snap" -PassThru
           if (-not $p.WaitForExit(90000)) { $p.Kill(); throw 'Arayüz zamanında kapanmadı' }
           if (Test-Path snap\error.txt) { Get-Content snap\error.txt; throw 'Arayüz açılırken hata oluştu' }
-          if (-not (Test-Path snap\page1.png)) { throw 'Sayfa görüntüleri oluşmadı' }
+          if (-not (Test-Path snap\page0.png)) { throw 'Sayfa görüntüleri oluşmadı' }
           Get-ChildItem snap
 
       - name: Upload screenshots

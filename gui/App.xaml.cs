@@ -1,6 +1,5 @@
 using System.Windows;
 using Hub.Modules.GoodbyeDpi;
-using Hub.Modules.Settings;
 
 namespace Hub;
 
@@ -15,15 +14,12 @@ public partial class App : Application
 
     /// <summary>Kenar çubuğundaki uygulamalar, sırasıyla. Yeni modül buraya eklenir.</summary>
     public IReadOnlyList<IModule> Modules { get; private set; } = [];
-    public SettingsModule Settings { get; } = new();
-    public bool Quitting { get; private set; }
 
     public static new App Current => (App)Application.Current;
 
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        var background = e.Args.Contains("--background");
 
         // Geliştirme için: --snapshot <klasör>  her sayfayı PNG olarak kaydeder (yönetici gerekmez).
         var snap = Array.IndexOf(e.Args, "--snapshot");
@@ -46,16 +42,8 @@ public partial class App : Application
         if (!Elevation.IsAdmin)
         {
             // Kısayoldan normal yetkiyle açıldı: yönetici kopyayı UAC sormadan görevle başlat.
-            // Görev yoksa (ilk açılış) bir kereliğine UAC ile yükselir; o kopya görevleri kurar.
-            if (!Elevation.TryRunShowTask()) Elevation.RelaunchElevated(background ? "--background" : "--show");
-            Shutdown();
-            return;
-        }
-
-        // Kurulum, eski sürümde açık olan "Windows ile başlat"ı yeni görev adıyla taşımak için çağırır.
-        if (e.Args.Contains("--enable-autostart"))
-        {
-            try { Elevation.SetAutostart(true); } catch { }
+            // Görev yoksa (ilk açılış) bir kereliğine UAC ile yükselir; o kopya görevi kurar.
+            if (!Elevation.TryRunShowTask()) Elevation.RelaunchElevated("--show");
             Shutdown();
             return;
         }
@@ -64,15 +52,16 @@ public partial class App : Application
         _showSignal = new EventWaitHandle(false, EventResetMode.AutoReset, ShowEventName);
         if (!first)
         {
-            // Zaten arka planda çalışıyor: penceresini öne getir ve çık.
-            if (!background) _showSignal.Set();
+            // Zaten açık: penceresini öne getir ve çık.
+            _showSignal.Set();
             Shutdown();
             return;
         }
 
-        try { Elevation.RegisterTasks(); } catch { /* görevler olmadan da çalışır, sadece UAC sorar */ }
+        try { Elevation.RegisterTask(); } catch { /* görev olmadan da çalışır, sadece UAC sorar */ }
 
-        ShutdownMode = ShutdownMode.OnExplicitShutdown;
+        // Pencere kapanınca program da kapanır; GoodbyeDPI ayrı bir Windows hizmeti olarak çalışmaya devam eder.
+        ShutdownMode = ShutdownMode.OnMainWindowClose;
         Modules = [new GoodbyeDpiModule()];
         foreach (var m in Modules) m.Start();
 
@@ -81,12 +70,12 @@ public partial class App : Application
             while (_showSignal.WaitOne()) Dispatcher.Invoke(ShowWindow);
         }) { IsBackground = true }.Start();
 
-        if (!background) ShowWindow();
+        ShowWindow();
     }
 
-    public void ShowWindow()
+    void ShowWindow()
     {
-        _window ??= new MainWindow();
+        if (_window == null) MainWindow = _window = new MainWindow();
         _window.Show();
         if (_window.WindowState == WindowState.Minimized) _window.WindowState = WindowState.Normal;
         // Görev Zamanlayıcı'dan başlayan süreç ön plana çıkma hakkı olmayabilir; kısa süre en üste al.
@@ -117,10 +106,9 @@ public partial class App : Application
         Shutdown();
     }
 
-    public void Quit()
+    protected override void OnExit(ExitEventArgs e)
     {
-        Quitting = true;
         foreach (var m in Modules) m.Stop();
-        Shutdown();
+        base.OnExit(e);
     }
 }

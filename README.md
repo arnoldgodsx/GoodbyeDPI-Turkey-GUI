@@ -38,7 +38,7 @@ yavaşlatmadan** girmenizi sağlar. Orijinal sürümde hizmeti kurmak, profil de
 | **Tek tıkla aç / kapat** | Büyük güç düğmesiyle GoodbyeDPI'ı anında başlatıp durdurursunuz. |
 | **7 hazır profil** | Orijinal projedeki standart ve Superonline alternatif yöntemlerinin hepsi hazır; birinden diğerine tek tıkla geçilir. |
 | **Windows ile başlat** | İsterseniz GoodbyeDPI bilgisayar açılınca kendiliğinden çalışır. |
-| **Arka planda çalışır** | Pencereyi kapatınca program gizlenir, GoodbyeDPI çalışmaya devam eder. Bildirim alanını kalabalıklaştırmaz. |
+| **Açık kalması gerekmez** | GoodbyeDPI bir Windows hizmeti olarak çalışır; ayarı yapıp pencereyi kapatabilirsiniz. Arka planda bekleyen program ya da bildirim alanı simgesi yoktur. |
 | **Hafif** | Kurulum dosyası birkaç MB; Windows'ta hazır gelen .NET Framework 4.8 kullanılır, ek bir şey indirilmez. |
 | **Temiz kaldırma** | Program kaldırılınca GoodbyeDPI hizmeti, WinDivert sürücüsü ve zamanlanmış görevler de silinir. |
 | **Eski kurulumla uyumlu** | `.cmd` dosyalarıyla daha önce hizmet kurduysanız program onu tanır, seçili profili gösterir ve kendi kopyasına taşır. |
@@ -63,9 +63,7 @@ yavaşlatmadan** girmenizi sağlar. Orijinal sürümde hizmeti kurmak, profil de
 
 ## Kullanım
 
-Program açıldığında solda uygulamalar, sağda seçili sayfa görünür.
-
-### GoodbyeDPI sayfası
+Programda tek bir sayfa var; tüm ayarlar burada.
 
 - **Güç düğmesi:** GoodbyeDPI'ı açar ya da kapatır. İşlem sürerken düğme yavaşça yanıp söner;
   birkaç saniye içinde açık (dolu) ya da kapalı (boş) duruma geçer.
@@ -74,23 +72,9 @@ Program açıldığında solda uygulamalar, sağda seçili sayfa görünür.
 - **Profil:** Sağdaki listeden yöntemi seçin. GoodbyeDPI çalışırken profil değiştirirseniz yeni ayarla
   hemen yeniden başlatılır. Bir hata olursa açıklaması düğmenin altında kırmızı yazıyla görünür.
 
-### Ayarlar sayfası
-
-- **Windows ile başlat:** *Arayüzün* oturum açılınca arka planda başlamasını sağlar. (GoodbyeDPI'ın
-  kendisinin açılışta çalışması için GoodbyeDPI sayfasındaki ayar yeterlidir; bu ayar sadece pencereyi hazır tutar.)
-- **Klasörü aç:** Programın kurulu olduğu klasörü açar.
-- **Arayüzü kapat:** Programı tamamen kapatır. GoodbyeDPI hizmeti açıksa çalışmaya devam eder.
-
-### Kısayollar
-
-| Tuş | İşlev |
-|---|---|
-| `Ctrl` + `1` … `9` | Sayfalar arasında geçiş |
-| `Esc` | Pencereyi arka plana gönderir |
-
 > [!TIP]
-> Pencereyi kapattığınızda program kapanmaz, arka planda bekler. Masaüstü kısayoluna yeniden tıkladığınızda
-> aynı pencere öne gelir. İlk açılıştan sonra yönetici izni (UAC) tekrar sorulmaz.
+> Pencereyi kapatmak (sağ üstteki ✕ ya da `Esc`) yalnızca arayüzü kapatır. GoodbyeDPI açıksa çalışmaya devam eder;
+> kapatmak için programı yeniden açıp güç düğmesine basın. İlk açılıştan sonra yönetici izni (UAC) tekrar sorulmaz.
 
 ## Hangi profili seçmeliyim?
 
@@ -178,7 +162,7 @@ Kaldırıcı programı kapatır ve şunları siler:
 
 - `GoodbyeDPI` Windows hizmetini
 - `WinDivert` sürücüsünü
-- Programın zamanlanmış görevlerini (`GoodbyeDPI-Turkey GUI`, `GoodbyeDPI-Turkey GUI Autostart`)
+- Programın zamanlanmış görevini (`GoodbyeDPI-Turkey GUI`)
 - Program dosyalarını ve kısayolları
 
 ## Nasıl çalışır?
@@ -190,8 +174,7 @@ kendisi (`goodbyedpi.exe` ve WinDivert) orijinal Türkiye sürümüyle aynıdır
 
 Hizmeti yönetmek yönetici yetkisi gerektirir. Her açılışta UAC penceresiyle uğraşmamak için program ilk açılışta
 Görev Zamanlayıcı'ya "en yüksek yetkiyle" çalışan bir `GoodbyeDPI-Turkey GUI` görevi ekler ve kısayol programı bu görev üzerinden
-açar. *Ayarlar → Windows ile başlat* açıksa oturum açıldığında arayüzü arka planda başlatan bir `GoodbyeDPI-Turkey GUI Autostart`
-görevi de eklenir.
+açar.
 
 ## Kaynaktan derleme
 
