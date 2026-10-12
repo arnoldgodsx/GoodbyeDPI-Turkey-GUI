@@ -1,4 +1,4 @@
-; GoodbyeDPI-Turkey arayüzü kurulum betiği (Inno Setup 6).
+﻿; GoodbyeDPI-Turkey arayüzü kurulum betiği (Inno Setup 6).
 ; Derleme: önce gui\dist'e publish edin, sonra  iscc /DAppVersion=1.0 installer\setup.iss
 ; Çıktı: gui\installer\Output\GoodbyeDPI-Turkey-GUI-v<sürüm>-Setup.exe
 
@@ -22,7 +22,6 @@ DefaultDirName={autopf}\{#AppName}
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
 PrivilegesRequired=admin
-ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 MinVersion=10.0
 OutputDir=Output
@@ -66,6 +65,21 @@ Filename: "{sys}\sc.exe"; Parameters: "delete WinDivert"; Flags: runhidden; RunO
 [Code]
 var
   SvcWasRunning: Boolean;
+
+// Arayüz .NET Framework 4.8 ister; Windows 10 (1903+) ve 11'de hazır gelir.
+function InitializeSetup(): Boolean;
+var
+  Release: Cardinal;
+  Code: Integer;
+begin
+  Result := True;
+  if RegQueryDWordValue(HKLM, 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', Release) and (Release >= 528040) then
+    Exit;
+  if MsgBox('Bu program .NET Framework 4.8 gerektirir ve bilgisayarınızda bulunamadı.' + #13#10#13#10 +
+            'İndirme sayfası açılsın mı? (Kurduktan sonra bu kurulumu tekrar çalıştırın.)', mbConfirmation, MB_YESNO) = IDYES then
+    ShellExec('open', 'https://dotnet.microsoft.com/download/dotnet-framework/net48', '', '', SW_SHOWNORMAL, ewNoWait, Code);
+  Result := False;
+end;
 
 function Run(const Exe, Params: String): Integer;
 begin

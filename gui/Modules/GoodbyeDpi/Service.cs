@@ -60,13 +60,13 @@ static class Svc
     {
         var s = (imagePath ?? "").Trim();
         if (s.Length == 0) return ("", "");
-        if (s.StartsWith('"'))
+        if (s[0] == '"')
         {
             var q = s.IndexOf('"', 1);
-            return q < 0 ? (s.Trim('"'), "") : (s[1..q], s[(q + 1)..].Trim());
+            return q < 0 ? (s.Trim('"'), "") : (s.Substring(1, q - 1), s.Substring(q + 1).Trim());
         }
         var sp = s.IndexOf(' ');
-        return sp < 0 ? (s, "") : (s[..sp], s[(sp + 1)..].Trim());
+        return sp < 0 ? (s, "") : (s.Substring(0, sp), s.Substring(sp + 1).Trim());
     }
 
     public static string ArgsOf(string? imagePath) => Split(imagePath).Args;

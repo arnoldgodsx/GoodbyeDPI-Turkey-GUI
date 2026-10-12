@@ -2,14 +2,19 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <!-- Windows 10/11'de hazır gelen .NET Framework 4.8: ek runtime indirmesi gerekmez, exe küçük kalır. -->
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
     <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>Hub</AssemblyName>
     <RootNamespace>Hub</RootNamespace>
     <ApplicationIcon>Assets\hub.ico</ApplicationIcon>
-    <Product>Hub</Product>
+    <Product>GoodbyeDPI-Turkey</Product>
     <AssemblyTitle>Hub</AssemblyTitle>
     <Company>arnoldgodsx</Company>
     <Version>1.0.0</Version>
@@ -17,7 +22,7 @@
 
   <ItemGroup>
     <Using Include="System.IO" />
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="10.*" />
+    <Reference Include="System.ServiceProcess" />
     <Resource Include="Assets\hub.ico" />
     <!-- Geist, Geist Mono (OFL lisanslı, Assets\Fonts\OFL.txt) -->
     <Resource Include="Assets\Fonts\*.ttf" />

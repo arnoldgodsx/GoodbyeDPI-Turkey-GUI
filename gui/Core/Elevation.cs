@@ -18,7 +18,7 @@ static class Elevation
     const string AutostartTask = "Hub Autostart";
 
     static string Schtasks => Path.Combine(Environment.SystemDirectory, "schtasks.exe");
-    static string Exe => Environment.ProcessPath!;
+    static readonly string Exe = Process.GetCurrentProcess().MainModule!.FileName;
 
     public static bool IsAdmin =>
         new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);

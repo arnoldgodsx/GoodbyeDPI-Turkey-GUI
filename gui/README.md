@@ -8,7 +8,7 @@ Profiller `windows\service_install_dnsredir_turkey*.cmd` betikleriyle birebir ay
 
 **[GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe](https://github.com/arnoldgodsx/hub/releases/latest/download/GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe)** dosyasını indirip çalıştırın.
 Program `C:\Program Files\GoodbyeDPI-Turkey` klasörüne kurulur, masaüstüne ve Başlat menüsüne kısayol eklenir;
-.NET kurmanız gerekmez. Kaldırmak için Ayarlar → Uygulamalar → GoodbyeDPI-Turkey (hizmet ve görevler de silinir).
+ek bir şey kurmanız gerekmez. Kaldırmak için Ayarlar → Uygulamalar → GoodbyeDPI-Turkey (hizmet ve görevler de silinir).
 
 ## Arayüz
 
@@ -53,12 +53,12 @@ Klavye: `Ctrl+1…9` sayfa seçer, `Esc` pencereyi arka plana gönderir.
 
 ## Derleme ve kurulum
 
-`gui\` klasöründe (.NET 10 SDK gerekir). Kurulum exe'si Actions → "Build GUI" → Run workflow ("release" işaretli)
+`gui\` klasöründe (.NET SDK gerekir; hedef .NET Framework 4.8, Windows'ta hazır gelir). Kurulum exe'si Actions → "Build GUI" → Run workflow ("release" işaretli)
 ile ya da `v*` etiketi push'lanınca derlenip Release'e eklenir; elle derlemek için publish'ten sonra
 `iscc installer\setup.iss` (Inno Setup 6). Geliştirme kurulumu için:
 
 ```
-dotnet publish Hub.csproj -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o dist
+dotnet publish Hub.csproj -c Release -o dist
 powershell -ExecutionPolicy Bypass -File tools\install.ps1   # yönetici olarak
 ```
 

@@ -31,8 +31,9 @@ public static class Motion
             var el = items[i];
             if (el.RenderTransform is not TranslateTransform t)
                 el.RenderTransform = t = new TranslateTransform();
-            t.BeginAnimation(TranslateTransform.YProperty, Hold(14, 0, Step * i));
-            el.BeginAnimation(UIElement.OpacityProperty, Hold(0, 1, Step * i));
+            var delay = TimeSpan.FromTicks(Step.Ticks * i);
+            t.BeginAnimation(TranslateTransform.YProperty, Hold(14, 0, delay));
+            el.BeginAnimation(UIElement.OpacityProperty, Hold(0, 1, delay));
         }
     }
 
