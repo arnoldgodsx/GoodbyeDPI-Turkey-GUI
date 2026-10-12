@@ -6,8 +6,8 @@ namespace Hub;
 
 public partial class App : Application
 {
-    const string MutexName = @"Local\arnoldgodsx.Hub";
-    const string ShowEventName = @"Local\arnoldgodsx.Hub.Show";
+    const string MutexName = @"Local\GoodbyeDPI-Turkey-GUI";
+    const string ShowEventName = @"Local\GoodbyeDPI-Turkey-GUI.Show";
 
     Mutex? _mutex;
     EventWaitHandle? _showSignal;
@@ -48,6 +48,14 @@ public partial class App : Application
             // Kısayoldan normal yetkiyle açıldı: yönetici kopyayı UAC sormadan görevle başlat.
             // Görev yoksa (ilk açılış) bir kereliğine UAC ile yükselir; o kopya görevleri kurar.
             if (!Elevation.TryRunShowTask()) Elevation.RelaunchElevated(background ? "--background" : "--show");
+            Shutdown();
+            return;
+        }
+
+        // Kurulum, eski sürümde açık olan "Windows ile başlat"ı yeni görev adıyla taşımak için çağırır.
+        if (e.Args.Contains("--enable-autostart"))
+        {
+            try { Elevation.SetAutostart(true); } catch { }
             Shutdown();
             return;
         }

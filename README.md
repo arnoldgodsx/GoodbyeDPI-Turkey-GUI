@@ -1,6 +1,6 @@
 # GoodbyeDPI-Turkey Arayüz
 
-[![Sürüm](https://img.shields.io/github/v/release/arnoldgodsx/hub?label=s%C3%BCr%C3%BCm)](https://github.com/arnoldgodsx/hub/releases/latest)
+[![Sürüm](https://img.shields.io/github/v/release/arnoldgodsx/GoodbyeDPI-Turkey-GUI?label=s%C3%BCr%C3%BCm)](https://github.com/arnoldgodsx/GoodbyeDPI-Turkey-GUI/releases/latest)
 [![Lisans](https://img.shields.io/badge/lisans-Apache%202.0-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-lightgrey.svg)](#sistem-gereksinimleri)
 
@@ -12,7 +12,7 @@ yavaşlatmadan** girmenizi sağlar. Orijinal sürümde hizmeti kurmak, profil de
 `.cmd` dosyalarını yönetici olarak çalıştırmak gerekir. Bu sürümde aynı işleri sade bir pencereden yaparsınız.
 
 <p align="center">
-  <a href="https://github.com/arnoldgodsx/hub/releases/latest/download/GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe">
+  <a href="https://github.com/arnoldgodsx/GoodbyeDPI-Turkey-GUI/releases/latest/download/GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe">
     <b>⬇ Kurulum dosyasını indir (v1.0)</b>
   </a>
 </p>
@@ -45,7 +45,7 @@ yavaşlatmadan** girmenizi sağlar. Orijinal sürümde hizmeti kurmak, profil de
 
 ## Kurulum
 
-1. **[GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe](https://github.com/arnoldgodsx/hub/releases/latest/download/GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe)** dosyasını indirin.
+1. **[GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe](https://github.com/arnoldgodsx/GoodbyeDPI-Turkey-GUI/releases/latest/download/GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe)** dosyasını indirin.
 2. Dosyayı çalıştırın ve kurulum sihirbazındaki adımları izleyin.
    - Program `C:\Program Files\GoodbyeDPI-Turkey` klasörüne kurulur.
    - Masaüstüne ve Başlat menüsüne **GoodbyeDPI-Turkey** kısayolu eklenir.
@@ -79,7 +79,7 @@ Program açıldığında solda uygulamalar, sağda seçili sayfa görünür.
 - **Windows ile başlat:** *Arayüzün* oturum açılınca arka planda başlamasını sağlar. (GoodbyeDPI'ın
   kendisinin açılışta çalışması için GoodbyeDPI sayfasındaki ayar yeterlidir; bu ayar sadece pencereyi hazır tutar.)
 - **Klasörü aç:** Programın kurulu olduğu klasörü açar.
-- **Hub'ı kapat:** Arayüzü tamamen kapatır. GoodbyeDPI hizmeti açıksa çalışmaya devam eder.
+- **Arayüzü kapat:** Programı tamamen kapatır. GoodbyeDPI hizmeti açıksa çalışmaya devam eder.
 
 ### Kısayollar
 
@@ -178,7 +178,7 @@ Kaldırıcı programı kapatır ve şunları siler:
 
 - `GoodbyeDPI` Windows hizmetini
 - `WinDivert` sürücüsünü
-- Programın zamanlanmış görevlerini (`Hub`, `Hub Autostart`)
+- Programın zamanlanmış görevlerini (`GoodbyeDPI-Turkey GUI`, `GoodbyeDPI-Turkey GUI Autostart`)
 - Program dosyalarını ve kısayolları
 
 ## Nasıl çalışır?
@@ -189,8 +189,8 @@ kendisi (`goodbyedpi.exe` ve WinDivert) orijinal Türkiye sürümüyle aynıdır
 `engine\goodbyedpi\` altında durur.
 
 Hizmeti yönetmek yönetici yetkisi gerektirir. Her açılışta UAC penceresiyle uğraşmamak için program ilk açılışta
-Görev Zamanlayıcı'ya "en yüksek yetkiyle" çalışan bir `Hub` görevi ekler ve kısayol programı bu görev üzerinden
-açar. *Ayarlar → Windows ile başlat* açıksa oturum açıldığında arayüzü arka planda başlatan bir `Hub Autostart`
+Görev Zamanlayıcı'ya "en yüksek yetkiyle" çalışan bir `GoodbyeDPI-Turkey GUI` görevi ekler ve kısayol programı bu görev üzerinden
+açar. *Ayarlar → Windows ile başlat* açıksa oturum açıldığında arayüzü arka planda başlatan bir `GoodbyeDPI-Turkey GUI Autostart`
 görevi de eklenir.
 
 ## Kaynaktan derleme
@@ -210,12 +210,12 @@ anlatılıyor. Kısaca:
 
 ```
 cd gui
-dotnet publish Hub.csproj -c Release -o dist
+dotnet publish GoodbyeDPI-Turkey-GUI.csproj -c Release -o dist
 iscc installer\setup.iss
 ```
 
 Her sürümün kurulum dosyası GitHub Actions'taki **Build GUI** iş akışı tarafından derlenip
-[Releases](https://github.com/arnoldgodsx/hub/releases) sayfasına eklenir.
+[Releases](https://github.com/arnoldgodsx/GoodbyeDPI-Turkey-GUI/releases) sayfasına eklenir.
 
 ## Teşekkür ve lisans
 

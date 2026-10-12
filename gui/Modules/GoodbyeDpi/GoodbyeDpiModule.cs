@@ -48,7 +48,7 @@ public sealed class GoodbyeDpiModule : IModule
     }
 
     /// <summary>
-    /// Hizmet eski bir klasördeki goodbyedpi.exe'yi gösteriyorsa Hub'ın kendi kopyasına yönlendirir.
+    /// Hizmet eski bir klasördeki goodbyedpi.exe'yi gösteriyorsa arayüzün kendi kopyasına yönlendirir.
     /// Çalışan hizmete dokunmaz; yeni yol bir sonraki başlatmada geçerli olur.
     /// </summary>
     void MigrateEnginePath()

@@ -39,14 +39,14 @@ jobs:
 
       # Hedef .NET Framework 4.8 (Windows'ta hazır): çıktı birkaç yüz KB.
       - name: Publish
-        run: dotnet publish Hub.csproj -c Release -o dist
+        run: dotnet publish GoodbyeDPI-Turkey-GUI.csproj -c Release -o dist
 
       # Arayüz gerçekten açılıyor mu: her sayfayı çizip PNG kaydeder, hata olursa error.txt yazar.
       - name: Smoke test
         shell: pwsh
         run: |
-          $p = Start-Process dist\Hub.exe -ArgumentList '--snapshot', "$PWD\snap" -PassThru
-          if (-not $p.WaitForExit(90000)) { $p.Kill(); throw 'Hub.exe zamanında kapanmadı' }
+          $p = Start-Process dist\GoodbyeDPI-Turkey-GUI.exe -ArgumentList '--snapshot', "$PWD\snap" -PassThru
+          if (-not $p.WaitForExit(90000)) { $p.Kill(); throw 'Arayüz zamanında kapanmadı' }
           if (Test-Path snap\error.txt) { Get-Content snap\error.txt; throw 'Arayüz açılırken hata oluştu' }
           if (-not (Test-Path snap\page1.png)) { throw 'Sayfa görüntüleri oluşmadı' }
           Get-ChildItem snap
