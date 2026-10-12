@@ -70,7 +70,7 @@ Filename: "{sys}\sc.exe"; Parameters: "delete WinDivert"; Flags: runhidden; RunO
 
 [Code]
 var
-  SvcWasRunning, LegacyAutostart: Boolean;
+  SvcWasRunning: Boolean;
 
 // Arayüz .NET Framework 4.8 ister; Windows 10 (1903+) ve 11'de hazır gelir.
 function InitializeSetup(): Boolean;
@@ -98,11 +98,12 @@ function PrepareToInstall(var NeedsRestart: Boolean): String;
 begin
   SvcWasRunning := Run('cmd.exe', '/c sc query {#SvcName} | find "RUNNING"') = 0;
   Run('taskkill.exe', '/f /im {#AppExe}');
-  // v1.0 ("Hub") üzerine kuruluyorsa eski görevleri kaldır; "Windows ile başlat" açıksa yeni adla taşınır.
+  // Arayüzün kendi "Windows ile başlat" görevi artık yok; önceki sürümlerden kalanı sil.
+  Run('schtasks.exe', '/delete /tn "GoodbyeDPI-Turkey GUI Autostart" /f');
+  // v1.0 ("Hub") üzerine kuruluyorsa eski görevleri de kaldır.
   if FileExists(ExpandConstant('{app}\{#LegacyExe}')) then
   begin
     Run('taskkill.exe', '/f /im {#LegacyExe}');
-    LegacyAutostart := Run('schtasks.exe', '/query /tn "Hub Autostart"') = 0;
     Run('schtasks.exe', '/delete /tn "Hub Autostart" /f');
     Run('schtasks.exe', '/delete /tn "Hub" /f');
   end;
@@ -116,12 +117,7 @@ begin
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
-var
-  Code: Integer;
 begin
-  if CurStep <> ssPostInstall then Exit;
-  if SvcWasRunning then
+  if (CurStep = ssPostInstall) and SvcWasRunning then
     Run('sc.exe', 'start {#SvcName}');
-  if LegacyAutostart then
-    Exec(ExpandConstant('{app}\{#AppExe}'), '--enable-autostart', ExpandConstant('{app}'), SW_HIDE, ewWaitUntilTerminated, Code);
 end;

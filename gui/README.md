@@ -14,7 +14,7 @@ ek bir şey kurmanız gerekmez. Kaldırmak için Ayarlar → Uygulamalar → Goo
 
 Uygulamaları tek pencerede toplayan panel yapısındadır. Koyu, siyah-beyaz arayüz:
 solda uygulamalar, sağda seçilen uygulamanın sayfası. Bildirim alanında simgesi yoktur;
-pencere kapatılınca arka planda çalışmaya devam eder (Görev Yöneticisi'nde "GoodbyeDPI-Turkey GUI").
+pencere kapatılınca program da kapanır (GoodbyeDPI hizmeti etkilenmez).
 
 | Uygulama        | Ne yapar |
 |-----------------|----------|
@@ -23,10 +23,9 @@ pencere kapatılınca arka planda çalışmaya devam eder (Görev Yöneticisi'nd
 ## Yetki ve açılış
 
 Arayüz yönetici olarak çalışır (GoodbyeDPI hizmeti için). Her açılışta UAC sormamak için
-Görev Zamanlayıcı'da iki görev kullanır: `GoodbyeDPI-Turkey GUI` (kısayoldan açılış) ve `GoodbyeDPI-Turkey GUI Autostart`
-(Ayarlar → Windows ile başlat açıksa oturum açılınca arka planda başlatır).
+Görev Zamanlayıcı'da tetikleyicisiz bir `GoodbyeDPI-Turkey GUI` görevi kullanır.
 Kısayol normal yetkiyle `GoodbyeDPI-Turkey-GUI.exe`'yi açar, o da görevi tetikleyip çıkar.
-v1.0'daki eski `Hub` görevleri güncellemede kurulum tarafından kaldırılır.
+v1.0'daki eski `Hub` görevleri ve önceki sürümün `GoodbyeDPI-Turkey GUI Autostart` görevi güncellemede kurulum tarafından kaldırılır.
 
 ## Klasör yapısı
 
@@ -50,7 +49,7 @@ dist\                derleme çıktısı (GoodbyeDPI-Turkey-GUI.exe, repoda tutu
    Renk sadece durum için (`Ok`, `Danger`); stiller `Core\Theme.xaml`'da.
 3. `App.xaml.cs` → `Modules = [ ..., new YeniModule() ];`
 
-Klavye: `Ctrl+1…9` sayfa seçer, `Esc` pencereyi arka plana gönderir.
+Klavye: `Ctrl+1…9` sayfa seçer, `Esc` pencereyi kapatır.
 
 ## Derleme ve kurulum
 
