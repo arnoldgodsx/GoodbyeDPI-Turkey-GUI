@@ -29,6 +29,8 @@ yavaşlatmadan** girmenizi sağlar. Orijinal sürümde hizmeti kurmak, profil de
 - [Kaldırma](#kaldırma)
 - [Nasıl çalışır?](#nasıl-çalışır)
 - [Kaynaktan derleme](#kaynaktan-derleme)
+- [Kod imzalama politikası](#kod-imzalama-politikası)
+- [Gizlilik](#gizlilik)
 - [Teşekkür ve lisans](#teşekkür-ve-lisans)
 
 ## Neler yapabilir?
@@ -199,6 +201,28 @@ iscc installer\setup.iss
 
 Her sürümün kurulum dosyası GitHub Actions'taki **Build GUI** iş akışı tarafından derlenip
 [Releases](https://github.com/arnoldgodsx/GoodbyeDPI-Turkey-GUI/releases) sayfasına eklenir.
+
+## Kod imzalama politikası
+
+Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org).
+
+Kurulum dosyaları ve program, yalnızca bu repodaki kaynak koddan GitHub Actions üzerinde derlendikten sonra
+imzalanır. Her imzalama isteği aşağıdaki onaylayıcı tarafından elle onaylanır.
+
+| Rol | Kişi |
+|---|---|
+| Katkıcılar ve gözden geçirenler (Committers and reviewers) | [arnoldgodsx](https://github.com/arnoldgodsx) |
+| Onaylayıcılar (Approvers) | [arnoldgodsx](https://github.com/arnoldgodsx) |
+
+## Gizlilik
+
+This program will not transfer any information to other networked systems unless specifically requested by the
+user or the person installing or operating it.
+
+Program hiçbir kullanım verisi, kişisel bilgi ya da istatistik toplamaz ve hiçbir sunucuya göndermez. Tek ağ
+etkisi GoodbyeDPI'ın kendi işlevidir: "Yandex DNS (otomatik)" yazan profillerden birini seçerseniz DNS
+sorgularınız Yandex DNS'e (77.88.8.8) yönlendirilir. Bu davranış [profil tablosunda](#hangi-profili-seçmeliyim)
+belirtilmiştir ve "Windows ayarı" profilleriyle kapatılabilir.
 
 ## Teşekkür ve lisans
 
