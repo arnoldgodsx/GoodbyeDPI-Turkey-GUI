@@ -41,6 +41,22 @@ jobs:
       - name: Publish
         run: dotnet publish Hub.csproj -c Release -o dist
 
+      # Arayüz gerçekten açılıyor mu: her sayfayı çizip PNG kaydeder, hata olursa error.txt yazar.
+      - name: Smoke test
+        shell: pwsh
+        run: |
+          $p = Start-Process dist\Hub.exe -ArgumentList '--snapshot', "$PWD\snap" -PassThru
+          if (-not $p.WaitForExit(90000)) { $p.Kill(); throw 'Hub.exe zamanında kapanmadı' }
+          if (Test-Path snap\error.txt) { Get-Content snap\error.txt; throw 'Arayüz açılırken hata oluştu' }
+          if (-not (Test-Path snap\page1.png)) { throw 'Sayfa görüntüleri oluşmadı' }
+          Get-ChildItem snap
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: gui/snap
+
       - name: Install Inno Setup
         shell: pwsh
         run: |
