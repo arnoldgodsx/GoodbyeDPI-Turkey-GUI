@@ -8,8 +8,9 @@
 > Detaylı kurulum ve kullanım talimatları için **[`macos/README.md`](macos/README.md)** dosyasına bakın.
 
 
-> **Arayüz:** Bu kolda GoodbyeDPI'ı komut dosyası çalıştırmadan, tek tıkla açıp kapatan bir Windows arayüzü
-> bulunur. Derleme ve kurulum için **[`gui/README.md`](gui/README.md)** dosyasına bakın.
+> **Arayüz (v1.0):** Bu kolda GoodbyeDPI'ı komut dosyası çalıştırmadan, tek tıkla açıp kapatan bir Windows arayüzü
+> bulunur. **[Kurulum dosyasını indirin](https://github.com/arnoldgodsx/hub/releases/latest/download/GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe)**, çalıştırın; program Program Files'a kurulur,
+> masaüstüne kısayol eklenir. Ayrıntılar için **[`gui/README.md`](gui/README.md)**.
 
 # SplitWire-Turkey Hakkında Önemli Not (29.07.2025)
 >

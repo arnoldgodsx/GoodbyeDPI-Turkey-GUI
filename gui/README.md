@@ -4,6 +4,14 @@
 `.cmd` dosyalarıyla uğraşmadan hizmeti açıp kapatır, profil seçer, Windows ile başlatmayı ayarlar.
 Profiller `windows\service_install_dnsredir_turkey*.cmd` betikleriyle birebir aynı parametreleri kullanır.
 
+## Kurulum (v1.0)
+
+**[GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe](https://github.com/arnoldgodsx/hub/releases/latest/download/GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe)** dosyasını indirip çalıştırın.
+Program `C:\Program Files\GoodbyeDPI-Turkey` klasörüne kurulur, masaüstüne ve Başlat menüsüne kısayol eklenir;
+.NET kurmanız gerekmez. Kaldırmak için Ayarlar → Uygulamalar → GoodbyeDPI-Turkey (hizmet ve görevler de silinir).
+
+## Arayüz
+
 Uygulamaları tek pencerede toplayan panel yapısındadır. Koyu, siyah-beyaz arayüz:
 solda uygulamalar, sağda seçilen uygulamanın sayfası. Bildirim alanında simgesi yoktur;
 pencere kapatılınca arka planda çalışmaya devam eder (Görev Yöneticisi'nde "Hub").
@@ -28,7 +36,8 @@ Core\Theme.xaml      ortak renkler ve stiller (anahtar, kart, düğme, menü…)
 Core\                IModule, ikon üretici, halka, komut çalıştırıcı, yetki/görevler
 Modules\<Ad>\        her uygulama kendi klasöründe
 engine\goodbyedpi\   orijinal GoodbyeDPI paketi (exe'nin yanına kopyalanır)
-tools\               make-icon.ps1, install.ps1
+tools\               make-icon.ps1, install.ps1 (geliştirme kurulumu)
+installer\setup.iss  kurulum exe'si (Inno Setup)
 dist\                derleme çıktısı (Hub.exe, repoda tutulmaz)
 ```
 
@@ -44,7 +53,9 @@ Klavye: `Ctrl+1…9` sayfa seçer, `Esc` pencereyi arka plana gönderir.
 
 ## Derleme ve kurulum
 
-`gui\` klasöründe (.NET 10 SDK gerekir; hazır derleme her push'ta Actions → "Build GUI" çıktısında):
+`gui\` klasöründe (.NET 10 SDK gerekir). Kurulum exe'si `v*` etiketi push'lanınca Actions → "Build GUI"
+tarafından derlenip Release'e eklenir; elle derlemek için publish'ten sonra
+`iscc installer\setup.iss` (Inno Setup 6). Geliştirme kurulumu için:
 
 ```
 dotnet publish Hub.csproj -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o dist
