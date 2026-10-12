@@ -6,7 +6,8 @@
   #define AppVersion "1.0"
 #endif
 #define AppName "GoodbyeDPI-Turkey"
-#define AppExe "Hub.exe"
+#define AppExe "GoodbyeDPI-Turkey-GUI.exe"
+#define LegacyExe "Hub.exe"
 #define SvcName "GoodbyeDPI"
 
 [Setup]
@@ -15,7 +16,7 @@ AppName={#AppName}
 AppVersion={#AppVersion}
 AppVerName={#AppName} v{#AppVersion}
 AppPublisher=arnoldgodsx
-AppPublisherURL=https://github.com/arnoldgodsx/hub
+AppPublisherURL=https://github.com/arnoldgodsx/GoodbyeDPI-Turkey-GUI
 AppSupportURL=https://github.com/cagritaskn/GoodbyeDPI-Turkey
 VersionInfoVersion={#AppVersion}
 DefaultDirName={autopf}\{#AppName}
@@ -43,6 +44,11 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "..\dist\*"; DestDir: "{app}"; Excludes: "*.pdb"; Flags: ignoreversion recursesubdirs createallsubdirs
 
+[InstallDelete]
+; v1.0 "Hub" adıyla kurulmuştu
+Type: files; Name: "{app}\{#LegacyExe}"
+Type: files; Name: "{app}\{#LegacyExe}.config"
+
 [Icons]
 Name: "{autoprograms}\{#AppName}"; Filename: "{app}\{#AppExe}"; WorkingDir: "{app}"
 Name: "{autoprograms}\{#AppName} kaldır"; Filename: "{uninstallexe}"
@@ -54,8 +60,8 @@ Filename: "{app}\{#AppExe}"; Parameters: "--show"; WorkingDir: "{app}"; Descript
 
 [UninstallRun]
 Filename: "{sys}\taskkill.exe"; Parameters: "/f /im {#AppExe}"; Flags: runhidden; RunOnceId: "KillHub"
-Filename: "{sys}\schtasks.exe"; Parameters: "/delete /tn ""Hub Autostart"" /f"; Flags: runhidden; RunOnceId: "DelAutostartTask"
-Filename: "{sys}\schtasks.exe"; Parameters: "/delete /tn ""Hub"" /f"; Flags: runhidden; RunOnceId: "DelShowTask"
+Filename: "{sys}\schtasks.exe"; Parameters: "/delete /tn ""GoodbyeDPI-Turkey GUI Autostart"" /f"; Flags: runhidden; RunOnceId: "DelAutostartTask"
+Filename: "{sys}\schtasks.exe"; Parameters: "/delete /tn ""GoodbyeDPI-Turkey GUI"" /f"; Flags: runhidden; RunOnceId: "DelShowTask"
 Filename: "{sys}\sc.exe"; Parameters: "stop {#SvcName}"; Flags: runhidden; RunOnceId: "StopSvc"
 Filename: "{sys}\sc.exe"; Parameters: "delete {#SvcName}"; Flags: runhidden; RunOnceId: "DelSvc"
 Filename: "{sys}\taskkill.exe"; Parameters: "/f /im goodbyedpi.exe"; Flags: runhidden; RunOnceId: "KillEngine"
@@ -64,7 +70,7 @@ Filename: "{sys}\sc.exe"; Parameters: "delete WinDivert"; Flags: runhidden; RunO
 
 [Code]
 var
-  SvcWasRunning: Boolean;
+  SvcWasRunning, LegacyAutostart: Boolean;
 
 // Arayüz .NET Framework 4.8 ister; Windows 10 (1903+) ve 11'de hazır gelir.
 function InitializeSetup(): Boolean;
@@ -92,6 +98,14 @@ function PrepareToInstall(var NeedsRestart: Boolean): String;
 begin
   SvcWasRunning := Run('cmd.exe', '/c sc query {#SvcName} | find "RUNNING"') = 0;
   Run('taskkill.exe', '/f /im {#AppExe}');
+  // v1.0 ("Hub") üzerine kuruluyorsa eski görevleri kaldır; "Windows ile başlat" açıksa yeni adla taşınır.
+  if FileExists(ExpandConstant('{app}\{#LegacyExe}')) then
+  begin
+    Run('taskkill.exe', '/f /im {#LegacyExe}');
+    LegacyAutostart := Run('schtasks.exe', '/query /tn "Hub Autostart"') = 0;
+    Run('schtasks.exe', '/delete /tn "Hub Autostart" /f');
+    Run('schtasks.exe', '/delete /tn "Hub" /f');
+  end;
   if SvcWasRunning then
   begin
     Run('sc.exe', 'stop {#SvcName}');
@@ -102,7 +116,12 @@ begin
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
+var
+  Code: Integer;
 begin
-  if (CurStep = ssPostInstall) and SvcWasRunning then
+  if CurStep <> ssPostInstall then Exit;
+  if SvcWasRunning then
     Run('sc.exe', 'start {#SvcName}');
+  if LegacyAutostart then
+    Exec(ExpandConstant('{app}\{#AppExe}'), '--enable-autostart', ExpandConstant('{app}'), SW_HIDE, ewWaitUntilTerminated, Code);
 end;

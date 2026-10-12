@@ -124,7 +124,7 @@ static class Svc
         if (!Exists())
         {
             Sc($"create {Name} binPath= {Quote(bin)} start= {startArg} DisplayName= {Name}");
-            Sc($"description {Name} {Quote("Turkiye icin DNS zorlamasini kaldirir. (Hub)")}");
+            Sc($"description {Name} {Quote("Turkiye icin DNS zorlamasini kaldirir. (GoodbyeDPI-Turkey GUI)")}");
             return;
         }
         if (!string.Equals(ImagePath(), bin, StringComparison.OrdinalIgnoreCase))

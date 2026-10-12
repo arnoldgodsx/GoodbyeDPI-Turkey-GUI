@@ -11,11 +11,11 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName>Hub</AssemblyName>
+    <AssemblyName>GoodbyeDPI-Turkey-GUI</AssemblyName>
     <RootNamespace>Hub</RootNamespace>
     <ApplicationIcon>Assets\hub.ico</ApplicationIcon>
     <Product>GoodbyeDPI-Turkey</Product>
-    <AssemblyTitle>Hub</AssemblyTitle>
+    <AssemblyTitle>GoodbyeDPI-Turkey GUI</AssemblyTitle>
     <Company>arnoldgodsx</Company>
     <Version>1.0.0</Version>
   </PropertyGroup>

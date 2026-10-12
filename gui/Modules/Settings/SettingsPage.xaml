@@ -29,7 +29,7 @@
         <TextBlock x:Name="ErrorText" Foreground="{StaticResource Danger}" FontSize="12.5" TextWrapping="Wrap"
                    Margin="0,14,0,0" Visibility="Collapsed"/>
 
-        <Button Style="{StaticResource OutlineButton}" Content="Hub'ı kapat" HorizontalAlignment="Left"
+        <Button Style="{StaticResource OutlineButton}" Content="Arayüzü kapat" HorizontalAlignment="Left"
                 Margin="0,32,0,0" Click="OnQuit" hub:Motion.Reveal="True"/>
     </StackPanel>
 </UserControl>

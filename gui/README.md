@@ -1,4 +1,4 @@
-# GoodbyeDPI-Turkey Arayüzü (Hub)
+# GoodbyeDPI-Turkey GUI: geliştirici notları
 
 [GoodbyeDPI-Turkey](https://github.com/cagritaskn/GoodbyeDPI-Turkey) için Windows arayüzü:
 `.cmd` dosyalarıyla uğraşmadan hizmeti açıp kapatır, profil seçer, Windows ile başlatmayı ayarlar.
@@ -6,7 +6,7 @@ Profiller `windows\service_install_dnsredir_turkey*.cmd` betikleriyle birebir ay
 
 ## Kurulum (v1.0)
 
-**[GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe](https://github.com/arnoldgodsx/hub/releases/latest/download/GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe)** dosyasını indirip çalıştırın.
+**[GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe](https://github.com/arnoldgodsx/GoodbyeDPI-Turkey-GUI/releases/latest/download/GoodbyeDPI-Turkey-GUI-v1.0-Setup.exe)** dosyasını indirip çalıştırın.
 Program `C:\Program Files\GoodbyeDPI-Turkey` klasörüne kurulur, masaüstüne ve Başlat menüsüne kısayol eklenir;
 ek bir şey kurmanız gerekmez. Kaldırmak için Ayarlar → Uygulamalar → GoodbyeDPI-Turkey (hizmet ve görevler de silinir).
 
@@ -14,7 +14,7 @@ ek bir şey kurmanız gerekmez. Kaldırmak için Ayarlar → Uygulamalar → Goo
 
 Uygulamaları tek pencerede toplayan panel yapısındadır. Koyu, siyah-beyaz arayüz:
 solda uygulamalar, sağda seçilen uygulamanın sayfası. Bildirim alanında simgesi yoktur;
-pencere kapatılınca arka planda çalışmaya devam eder (Görev Yöneticisi'nde "Hub").
+pencere kapatılınca arka planda çalışmaya devam eder (Görev Yöneticisi'nde "GoodbyeDPI-Turkey GUI").
 
 | Uygulama        | Ne yapar |
 |-----------------|----------|
@@ -22,10 +22,11 @@ pencere kapatılınca arka planda çalışmaya devam eder (Görev Yöneticisi'nd
 
 ## Yetki ve açılış
 
-Hub yönetici olarak çalışır (GoodbyeDPI hizmeti için). Her açılışta UAC sormamak için
-Görev Zamanlayıcı'da iki görev kullanır: `Hub` (kısayoldan açılış) ve `Hub Autostart`
+Arayüz yönetici olarak çalışır (GoodbyeDPI hizmeti için). Her açılışta UAC sormamak için
+Görev Zamanlayıcı'da iki görev kullanır: `GoodbyeDPI-Turkey GUI` (kısayoldan açılış) ve `GoodbyeDPI-Turkey GUI Autostart`
 (Ayarlar → Windows ile başlat açıksa oturum açılınca arka planda başlatır).
-Kısayol normal yetkiyle `Hub.exe`'yi açar, o da `Hub` görevini tetikleyip çıkar.
+Kısayol normal yetkiyle `GoodbyeDPI-Turkey-GUI.exe`'yi açar, o da görevi tetikleyip çıkar.
+v1.0'daki eski `Hub` görevleri güncellemede kurulum tarafından kaldırılır.
 
 ## Klasör yapısı
 
@@ -38,7 +39,7 @@ Modules\<Ad>\        her uygulama kendi klasöründe
 engine\goodbyedpi\   orijinal GoodbyeDPI paketi (exe'nin yanına kopyalanır)
 tools\               make-icon.ps1, install.ps1 (geliştirme kurulumu)
 installer\setup.iss  kurulum exe'si (Inno Setup)
-dist\                derleme çıktısı (Hub.exe, repoda tutulmaz)
+dist\                derleme çıktısı (GoodbyeDPI-Turkey-GUI.exe, repoda tutulmaz)
 ```
 
 ## Yeni uygulama eklemek
@@ -58,10 +59,10 @@ ile ya da `v*` etiketi push'lanınca derlenip Release'e eklenir; elle derlemek i
 `iscc installer\setup.iss` (Inno Setup 6). Geliştirme kurulumu için:
 
 ```
-dotnet publish Hub.csproj -c Release -o dist
+dotnet publish GoodbyeDPI-Turkey-GUI.csproj -c Release -o dist
 powershell -ExecutionPolicy Bypass -File tools\install.ps1   # yönetici olarak
 ```
 
 Tasarım kontrolü için yetki gerekmeden:
-- `dist\Hub.exe --snapshot <klasör>` her sayfayı PNG kaydeder (hata olursa `error.txt`).
-- `dist\Hub.exe --preview` pencereyi modülleri başlatmadan açar. Anahtarlar yine gerçek komut çalıştırır.
+- `dist\GoodbyeDPI-Turkey-GUI.exe --snapshot <klasör>` her sayfayı PNG kaydeder (hata olursa `error.txt`).
+- `dist\GoodbyeDPI-Turkey-GUI.exe --preview` pencereyi modülleri başlatmadan açar. Anahtarlar yine gerçek komut çalıştırır.

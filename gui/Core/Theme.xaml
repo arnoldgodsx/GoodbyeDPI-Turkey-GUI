@@ -196,7 +196,7 @@
         </Setter>
     </Style>
 
-    <!-- Çerçeveli kapsül (Hub'ı kapat) -->
+    <!-- Çerçeveli kapsül (Arayüzü kapat) -->
     <Style x:Key="OutlineButton" TargetType="Button">
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
         <Setter Property="FontSize" Value="14"/>

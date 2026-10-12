@@ -7,15 +7,15 @@ using System.Text;
 namespace Hub;
 
 /// <summary>
-/// Hub yönetici yetkisiyle çalışır (GoodbyeDPI hizmetini yönetmek için). Her açılışta UAC
+/// Arayüz yönetici yetkisiyle çalışır (GoodbyeDPI hizmetini yönetmek için). Her açılışta UAC
 /// sormamak için "en yüksek yetkiyle" çalışan iki zamanlanmış görev kullanılır:
-///   "Hub"           – kısayoldan açılış (tetikleyicisiz, isteğe bağlı çalıştırılır)
-///   "Hub Autostart" – oturum açılınca arka planda başlatma (sadece "Windows ile başlat" açıksa var)
+///   "GoodbyeDPI-Turkey GUI"           – kısayoldan açılış (tetikleyicisiz, isteğe bağlı çalıştırılır)
+///   "GoodbyeDPI-Turkey GUI Autostart" – oturum açılınca arka planda başlatma (sadece "Windows ile başlat" açıksa var)
 /// </summary>
 static class Elevation
 {
-    const string ShowTask = "Hub";
-    const string AutostartTask = "Hub Autostart";
+    const string ShowTask = "GoodbyeDPI-Turkey GUI";
+    const string AutostartTask = "GoodbyeDPI-Turkey GUI Autostart";
 
     static string Schtasks => Path.Combine(Environment.SystemDirectory, "schtasks.exe");
     static readonly string Exe = Process.GetCurrentProcess().MainModule!.FileName;
@@ -67,7 +67,7 @@ static class Elevation
         var xml = $"""
             <?xml version="1.0" encoding="UTF-16"?>
             <Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
-              <RegistrationInfo><Description>Hub</Description></RegistrationInfo>
+              <RegistrationInfo><Description>GoodbyeDPI-Turkey GUI</Description></RegistrationInfo>
               {trigger}
               <Principals>
                 <Principal id="Author">
@@ -93,7 +93,7 @@ static class Elevation
             </Task>
             """;
 
-        var tmp = Path.Combine(Path.GetTempPath(), $"hub-task-{Guid.NewGuid():N}.xml");
+        var tmp = Path.Combine(Path.GetTempPath(), $"goodbyedpi-gui-task-{Guid.NewGuid():N}.xml");
         File.WriteAllText(tmp, xml, Encoding.Unicode);
         try { Proc.Run(Schtasks, $"/create /tn \"{name}\" /xml \"{tmp}\" /f"); }
         finally { File.Delete(tmp); }
