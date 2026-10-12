@@ -1,6 +1,10 @@
-# Hub
+# GoodbyeDPI-Turkey Arayüzü (Hub)
 
-Küçük uygulamalarımı tek pencerede toplayan panel. Koyu, siyah-beyaz arayüz:
+[GoodbyeDPI-Turkey](https://github.com/cagritaskn/GoodbyeDPI-Turkey) için Windows arayüzü:
+`.cmd` dosyalarıyla uğraşmadan hizmeti açıp kapatır, profil seçer, Windows ile başlatmayı ayarlar.
+Profiller `windows\service_install_dnsredir_turkey*.cmd` betikleriyle birebir aynı parametreleri kullanır.
+
+Uygulamaları tek pencerede toplayan panel yapısındadır. Koyu, siyah-beyaz arayüz:
 solda uygulamalar, sağda seçilen uygulamanın sayfası. Bildirim alanında simgesi yoktur;
 pencere kapatılınca arka planda çalışmaya devam eder (Görev Yöneticisi'nde "Hub").
 
@@ -39,6 +43,8 @@ dist\                derleme çıktısı (Hub.exe, repoda tutulmaz)
 Klavye: `Ctrl+1…9` sayfa seçer, `Esc` pencereyi arka plana gönderir.
 
 ## Derleme ve kurulum
+
+`gui\` klasöründe (.NET 10 SDK gerekir; hazır derleme her push'ta Actions → "Build GUI" çıktısında):
 
 ```
 dotnet publish Hub.csproj -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o dist

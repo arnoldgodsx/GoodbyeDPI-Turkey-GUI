@@ -8,6 +8,9 @@
 > Detaylı kurulum ve kullanım talimatları için **[`macos/README.md`](macos/README.md)** dosyasına bakın.
 
 
+> **Arayüz:** Bu kolda GoodbyeDPI'ı komut dosyası çalıştırmadan, tek tıkla açıp kapatan bir Windows arayüzü
+> bulunur. Derleme ve kurulum için **[`gui/README.md`](gui/README.md)** dosyasına bakın.
+
 # SplitWire-Turkey Hakkında Önemli Not (29.07.2025)
 >
 > [!IMPORTANT]
