@@ -1,4 +1,8 @@
-bin/
-obj/
-*.user
-.vs/
+*.o
+*.exe
+
+# macOS build outputs
+macos/bin/
+macos/third_party/byedpi/
+macos/launchd/com.cagritaskn.goodbyedpi-turkey.plist
+.DS_Store

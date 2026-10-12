@@ -1,0 +1,87 @@
+name: Build GUI
+
+on:
+  push:
+    paths:
+      - 'gui/**'
+      - '.github/workflows/gui.yml'
+    tags:
+      - 'v*'
+  pull_request:
+    paths:
+      - 'gui/**'
+      - '.github/workflows/gui.yml'
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "v<APP_VERSION> Release'ini oluştur/güncelle"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+env:
+  APP_VERSION: '1.0'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: gui
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # Hedef .NET Framework 4.8 (Windows'ta hazır): çıktı birkaç yüz KB.
+      - name: Publish
+        run: dotnet publish Hub.csproj -c Release -o dist
+
+      # Arayüz gerçekten açılıyor mu: her sayfayı çizip PNG kaydeder, hata olursa error.txt yazar.
+      - name: Smoke test
+        shell: pwsh
+        run: |
+          $p = Start-Process dist\Hub.exe -ArgumentList '--snapshot', "$PWD\snap" -PassThru
+          if (-not $p.WaitForExit(90000)) { $p.Kill(); throw 'Hub.exe zamanında kapanmadı' }
+          if (Test-Path snap\error.txt) { Get-Content snap\error.txt; throw 'Arayüz açılırken hata oluştu' }
+          if (-not (Test-Path snap\page1.png)) { throw 'Sayfa görüntüleri oluşmadı' }
+          Get-ChildItem snap
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: gui/snap
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) { choco install innosetup -y --no-progress }
+
+      - name: Build installer
+        shell: pwsh
+        run: '& "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" /DAppVersion=$env:APP_VERSION installer\setup.iss'
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: GoodbyeDPI-Turkey-GUI-Setup
+          path: gui/installer/Output/*.exe
+
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.APP_VERSION }}
+          target_commitish: ${{ github.sha }}
+          make_latest: true
+          name: GoodbyeDPI-Turkey GUI v${{ env.APP_VERSION }}
+          files: gui/installer/Output/*.exe
+          body: |
+            Windows kurulum dosyası. `GoodbyeDPI-Turkey-GUI-v${{ env.APP_VERSION }}-Setup.exe` dosyasını indirip çalıştırın;
+            program Program Files'a kurulur, masaüstüne ve Başlat menüsüne kısayol eklenir.
+            Ek bir şey kurmanız gerekmez (Windows 10/11'deki .NET Framework 4.8 kullanılır). Kaldırmak için: Ayarlar → Uygulamalar → GoodbyeDPI-Turkey.
