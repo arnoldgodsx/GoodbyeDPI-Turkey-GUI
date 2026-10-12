@@ -1,5 +1,4 @@
 using System.Windows;
-using Hub.Modules.Activity;
 using Hub.Modules.GoodbyeDpi;
 using Hub.Modules.Settings;
 
@@ -30,7 +29,7 @@ public partial class App : Application
         var snap = Array.IndexOf(e.Args, "--snapshot");
         if (snap >= 0 && snap + 1 < e.Args.Length)
         {
-            Modules = [new ActivityModule(), new GoodbyeDpiModule()];
+            Modules = [new GoodbyeDpiModule()];
             _ = SnapshotAsync(e.Args[snap + 1]);
             return;
         }
@@ -38,7 +37,7 @@ public partial class App : Application
         // Geliştirme için: --preview  pencereyi yönetici olmadan, modülleri başlatmadan gösterir.
         if (e.Args.Contains("--preview"))
         {
-            Modules = [new ActivityModule(), new GoodbyeDpiModule()];
+            Modules = [new GoodbyeDpiModule()];
             _window = new MainWindow();
             _window.Show();
             return;
@@ -66,7 +65,7 @@ public partial class App : Application
         try { Elevation.RegisterTasks(); } catch { /* görevler olmadan da çalışır, sadece UAC sorar */ }
 
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
-        Modules = [new ActivityModule(), new GoodbyeDpiModule()];
+        Modules = [new GoodbyeDpiModule()];
         foreach (var m in Modules) m.Start();
 
         new Thread(() =>

@@ -6,7 +6,6 @@ pencere kapatılınca arka planda çalışmaya devam eder (Görev Yöneticisi'nd
 
 | Uygulama        | Ne yapar |
 |-----------------|----------|
-| GitHub Activity | `arnoldgodsx/activity` reposunda her gün (UTC) katkıyı 45'e tamamlar |
 | GoodbyeDPI      | `GoodbyeDPI` Windows hizmetini açar/kapatır, profil ve otomatik başlatma |
 
 ## Yetki ve açılış
@@ -26,7 +25,7 @@ Core\                IModule, ikon üretici, halka, komut çalıştırıcı, yet
 Modules\<Ad>\        her uygulama kendi klasöründe
 engine\goodbyedpi\   orijinal GoodbyeDPI paketi (exe'nin yanına kopyalanır)
 tools\               make-icon.ps1, install.ps1
-dist\                derlenmiş uygulama (Hub.exe)
+dist\                derleme çıktısı (Hub.exe, repoda tutulmaz)
 ```
 
 ## Yeni uygulama eklemek
@@ -48,5 +47,4 @@ powershell -ExecutionPolicy Bypass -File tools\install.ps1   # yönetici olarak
 
 Tasarım kontrolü için yetki gerekmeden:
 - `dist\Hub.exe --snapshot <klasör>` her sayfayı PNG kaydeder (hata olursa `error.txt`).
-- `dist\Hub.exe --preview` pencereyi modülleri başlatmadan açar. Anahtarlar yine gerçek komut çalıştırır
-  (ör. GitHub yedeği `gh workflow` ile açılıp kapanır).
+- `dist\Hub.exe --preview` pencereyi modülleri başlatmadan açar. Anahtarlar yine gerçek komut çalıştırır.
