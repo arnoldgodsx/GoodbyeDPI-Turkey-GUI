@@ -36,7 +36,13 @@ static class Elevation
     }
 
     /// <summary>Yönetici kopyada her açılışta: görevi bu exe'nin güncel yoluna göre yeniler.</summary>
-    public static void RegisterTask() => Register(ShowTask, "--show");
+    public static void RegisterTask()
+    {
+        // Görev exe'yi UAC sormadan yönetici olarak açar; exe'yi başkası değiştirebiliyorsa
+        // kurma, varsa eskisini de sil (UAC her açılışta sorar).
+        if (Acl.AdminOnly([AppContext.BaseDirectory.TrimEnd('\\'), Exe])) Register(ShowTask, "--show");
+        else try { Proc.Run(Schtasks, $"/delete /tn \"{ShowTask}\" /f"); } catch { }
+    }
 
     static void Register(string name, string args)
     {
@@ -69,9 +75,22 @@ static class Elevation
             </Task>
             """;
 
+        // %TEMP% kullanıcının yükseltilmemiş süreçlerince de yazılabilir. Dosya schtasks okuyana kadar
+        // değiştirilemesin diye yazma/silme paylaşımı olmadan açık tutulur ve içeriği doğrulanır.
         var tmp = Path.Combine(Path.GetTempPath(), $"goodbyedpi-gui-task-{Guid.NewGuid():N}.xml");
-        File.WriteAllText(tmp, xml, Encoding.Unicode);
-        try { Proc.Run(Schtasks, $"/create /tn \"{name}\" /xml \"{tmp}\" /f"); }
-        finally { File.Delete(tmp); }
+        var bytes = Encoding.Unicode.GetPreamble().Concat(Encoding.Unicode.GetBytes(xml)).ToArray();
+        try
+        {
+            using (var w = new FileStream(tmp, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+                w.Write(bytes, 0, bytes.Length);
+            using var r = new FileStream(tmp, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var read = new byte[bytes.Length + 1];
+            int n = 0, k;
+            while (n < read.Length && (k = r.Read(read, n, read.Length - n)) > 0) n += k;
+            if (n != bytes.Length || !read.Take(n).SequenceEqual(bytes))
+                throw new InvalidOperationException("Görev dosyası değiştirilmiş");
+            Proc.Run(Schtasks, $"/create /tn \"{name}\" /xml \"{tmp}\" /f");
+        }
+        finally { try { File.Delete(tmp); } catch { } }
     }
 }

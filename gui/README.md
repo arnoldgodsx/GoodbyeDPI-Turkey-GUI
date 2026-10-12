@@ -62,6 +62,12 @@ dotnet publish GoodbyeDPI-Turkey-GUI.csproj -c Release -o dist
 powershell -ExecutionPolicy Bypass -File tools\install.ps1   # yönetici olarak
 ```
 
+**Güvenlik kuralı:** GoodbyeDPI hizmeti SYSTEM olarak, arayüz de UAC'siz görevle yönetici olarak çalışır.
+Bu yüzden program, dosyaları yönetici olmayanların (ya da kendi hesabınızın yükseltilmemiş süreçlerinin)
+değiştirebildiği bir klasörden çalışıyorsa hizmeti kurmayı/değiştirmeyi reddeder ve UAC'siz açılış görevini
+kurmaz (`Core\Acl.cs`). `dist\` gibi kullanıcı klasörlerindeki kopyalar yalnızca arayüzü denemek içindir;
+hizmeti yönetmek için kurulum dosyasıyla Program Files'a kurun.
+
 Tasarım kontrolü için yetki gerekmeden:
 - `dist\GoodbyeDPI-Turkey-GUI.exe --snapshot <klasör>` her sayfayı PNG kaydeder (hata olursa `error.txt`).
 - `dist\GoodbyeDPI-Turkey-GUI.exe --preview` pencereyi modülleri başlatmadan açar. Anahtarlar yine gerçek komut çalıştırır.

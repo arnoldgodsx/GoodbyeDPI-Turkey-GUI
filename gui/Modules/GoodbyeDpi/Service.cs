@@ -36,8 +36,20 @@ static class Svc
 {
     public const string Name = "GoodbyeDPI";
 
-    public static string EnginePath => Path.Combine(AppContext.BaseDirectory, "engine", "goodbyedpi",
-        Environment.Is64BitOperatingSystem ? "x86_64" : "x86", "goodbyedpi.exe");
+    static string EngineDir => Path.Combine(AppContext.BaseDirectory, "engine", "goodbyedpi",
+        Environment.Is64BitOperatingSystem ? "x86_64" : "x86");
+
+    public static string EnginePath => Path.Combine(EngineDir, "goodbyedpi.exe");
+
+    /// <summary>Hizmetin (SYSTEM olarak) yükleyeceği klasörler ve dosyalar.</summary>
+    static IEnumerable<string> EngineFiles()
+    {
+        var dir = AppContext.BaseDirectory.TrimEnd('\\');
+        yield return dir;
+        foreach (var part in new[] { "engine", "goodbyedpi", Path.GetFileName(EngineDir) })
+            yield return dir = Path.Combine(dir, part);
+        foreach (var f in Directory.GetFiles(EngineDir)) yield return f;
+    }
 
     public static bool Exists()
     {
@@ -116,6 +128,10 @@ static class Svc
     public static void Configure(Profile profile, bool autoStart)
     {
         if (!File.Exists(EnginePath)) throw new Exception("goodbyedpi.exe bulunamadı:\n" + EnginePath);
+        // Herkesin yazabildiği bir klasördeki exe'yi SYSTEM hizmetine bağlamak yetki yükseltmeye açık kapı olur.
+        if (!Acl.AdminOnly(EngineFiles()))
+            throw new Exception("Güvenlik: GoodbyeDPI dosyaları yönetici olmayan kullanıcıların değiştirebileceği bir klasörde.\n" +
+                                "Programı kurulum dosyasıyla (Program Files'a) kurup oradan çalıştırın.");
 
         var bin = "\"" + EnginePath + "\" " + profile.Args;
         var start = autoStart ? 2 : 3;
