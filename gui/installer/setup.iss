@@ -22,6 +22,10 @@ VersionInfoVersion={#AppVersion}
 DefaultDirName={autopf}\{#AppName}
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
+; Program Files dışına (ör. C:\GoodbyeDPI) kurulursa normal kullanıcılar dosyaları değiştirip
+; SYSTEM olarak çalışan hizmet üzerinden yetki yükseltebilir; klasör seçimi kapalı.
+DisableDirPage=yes
+UsePreviousAppDir=no
 PrivilegesRequired=admin
 ArchitecturesInstallIn64BitMode=x64compatible
 MinVersion=10.0
@@ -87,16 +91,19 @@ begin
   Result := False;
 end;
 
+// Sistem araçları tam yolla ve System32'de çalıştırılır; kurulumun indirildiği klasördeki
+// aynı adlı dosyalar (ör. find.exe) yönetici yetkisiyle çalışamaz.
 function Run(const Exe, Params: String): Integer;
 begin
-  if not Exec(ExpandConstant('{sys}\') + Exe, Params, '', SW_HIDE, ewWaitUntilTerminated, Result) then
+  if not Exec(ExpandConstant('{sys}\') + Exe, Params, ExpandConstant('{sys}'), SW_HIDE, ewWaitUntilTerminated, Result) then
     Result := -1;
 end;
 
 // Güncellemede dosyalar kilitli olmasın: arayüzü ve GoodbyeDPI'ı durdur, sonra geri aç.
 function PrepareToInstall(var NeedsRestart: Boolean): String;
 begin
-  SvcWasRunning := Run('cmd.exe', '/c sc query {#SvcName} | find "RUNNING"') = 0;
+  SvcWasRunning := Run('cmd.exe', '/d /c ""' + ExpandConstant('{sys}\sc.exe') + '" query {#SvcName} | "' +
+                       ExpandConstant('{sys}\find.exe') + '" "RUNNING""') = 0;
   Run('taskkill.exe', '/f /im {#AppExe}');
   // Arayüzün kendi "Windows ile başlat" görevi artık yok; önceki sürümlerden kalanı sil.
   Run('schtasks.exe', '/delete /tn "GoodbyeDPI-Turkey GUI Autostart" /f');
