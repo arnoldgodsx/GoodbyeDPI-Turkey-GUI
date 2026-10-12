@@ -12,6 +12,11 @@ on:
       - 'gui/**'
       - '.github/workflows/gui.yml'
   workflow_dispatch:
+    inputs:
+      release:
+        description: "v<APP_VERSION> Release'ini oluştur/güncelle"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -55,10 +60,13 @@ jobs:
           path: gui/installer/Output/*.exe
 
       - name: Release
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.release
         uses: softprops/action-gh-release@v2
         with:
-          name: GoodbyeDPI-Turkey GUI ${{ github.ref_name }}
+          tag_name: v${{ env.APP_VERSION }}
+          target_commitish: ${{ github.sha }}
+          make_latest: true
+          name: GoodbyeDPI-Turkey GUI v${{ env.APP_VERSION }}
           files: gui/installer/Output/*.exe
           body: |
             Windows kurulum dosyası. `GoodbyeDPI-Turkey-GUI-v${{ env.APP_VERSION }}-Setup.exe` dosyasını indirip çalıştırın;

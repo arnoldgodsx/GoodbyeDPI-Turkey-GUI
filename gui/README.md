@@ -53,8 +53,8 @@ Klavye: `Ctrl+1…9` sayfa seçer, `Esc` pencereyi arka plana gönderir.
 
 ## Derleme ve kurulum
 
-`gui\` klasöründe (.NET 10 SDK gerekir). Kurulum exe'si `v*` etiketi push'lanınca Actions → "Build GUI"
-tarafından derlenip Release'e eklenir; elle derlemek için publish'ten sonra
+`gui\` klasöründe (.NET 10 SDK gerekir). Kurulum exe'si Actions → "Build GUI" → Run workflow ("release" işaretli)
+ile ya da `v*` etiketi push'lanınca derlenip Release'e eklenir; elle derlemek için publish'ten sonra
 `iscc installer\setup.iss` (Inno Setup 6). Geliştirme kurulumu için:
 
 ```
