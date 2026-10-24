@@ -23,7 +23,7 @@ permissions:
   contents: read
 
 env:
-  APP_VERSION: '1.0'
+  APP_VERSION: '1.1'
 
 jobs:
   build:
@@ -39,6 +39,29 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+
+      # Motor dosyaları cagritaskn/GoodbyeDPI-Turkey release-0.2.3rc3-turkey ile birebir aynı olmalı.
+      # v1.0'da virüslü bir goodbyedpi.exe kuruluma girmişti; hash tutmazsa derleme durur.
+      - name: Verify engine binaries
+        shell: pwsh
+        run: |
+          $expected = @{
+            'engine/goodbyedpi/x86/goodbyedpi.exe'     = '66e202c9fce9e769e2bc791b7fd6f56f21eab59f607f4ed0724e0c68c430dd1f'
+            'engine/goodbyedpi/x86/WinDivert.dll'      = '625ffdd95bfabff32d0e8a95beabcd303c01c8bba73b90402d4e84d6e15dd8e5'
+            'engine/goodbyedpi/x86/WinDivert32.sys'    = '29ca5ceb59c9c6993a349e82b1fd46078e6f8a302764153ab84fa22e382fcdca'
+            'engine/goodbyedpi/x86/WinDivert64.sys'    = 'e69b5ba3f0cd6cfb2983e442636e7f0b342b61b15264b0328317d4559c82cf50'
+            'engine/goodbyedpi/x86_64/goodbyedpi.exe'  = '8d412b094bb9c137ff25ba9a794d1122ecc84bb776debff6c249723a13cc31cd'
+            'engine/goodbyedpi/x86_64/WinDivert.dll'   = '6110bfa44667405179c3e15e12af1b62037e447ed59b054b19042032995e6c7e'
+            'engine/goodbyedpi/x86_64/WinDivert64.sys' = 'e69b5ba3f0cd6cfb2983e442636e7f0b342b61b15264b0328317d4559c82cf50'
+          }
+          $found = Get-ChildItem engine -Recurse -File -Include *.exe,*.dll,*.sys | ForEach-Object { (Resolve-Path -Relative $_.FullName) -replace '^\.[\\/]', '' -replace '\\', '/' }
+          $extra = $found | Where-Object { -not $expected.ContainsKey($_) }
+          if ($extra) { throw "Listede olmayan ikili dosya: $($extra -join ', ')" }
+          foreach ($f in $expected.Keys) {
+            $h = (Get-FileHash $f -Algorithm SHA256).Hash.ToLower()
+            if ($h -ne $expected[$f]) { throw "$f hash uyuşmuyor: $h" }
+            "OK $f"
+          }
 
       # Hedef .NET Framework 4.8 (Windows'ta hazır): çıktı birkaç yüz KB.
       - name: Publish

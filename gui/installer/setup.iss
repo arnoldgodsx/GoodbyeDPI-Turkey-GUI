@@ -1,9 +1,9 @@
 ﻿; GoodbyeDPI-Turkey arayüzü kurulum betiği (Inno Setup 6).
-; Derleme: önce gui\dist'e publish edin, sonra  iscc /DAppVersion=1.0 installer\setup.iss
+; Derleme: önce gui\dist'e publish edin, sonra  iscc /DAppVersion=1.1 installer\setup.iss
 ; Çıktı: gui\installer\Output\GoodbyeDPI-Turkey-GUI-v<sürüm>-Setup.exe
 
 #ifndef AppVersion
-  #define AppVersion "1.0"
+  #define AppVersion "1.1"
 #endif
 #define AppName "GoodbyeDPI-Turkey"
 #define AppExe "GoodbyeDPI-Turkey-GUI.exe"

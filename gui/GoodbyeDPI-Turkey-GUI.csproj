@@ -17,7 +17,7 @@
     <Product>GoodbyeDPI-Turkey</Product>
     <AssemblyTitle>GoodbyeDPI-Turkey GUI</AssemblyTitle>
     <Company>arnoldgodsx</Company>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
